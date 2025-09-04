@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, Paper } from "@mui/material";
 import ResultCard from "./ResultCard";
+import "./UrlList.css";
+
 
 const STORAGE_KEY = "short_links";
 
@@ -22,11 +24,23 @@ function UrlList() {
   }, []);
 
   if (links.length === 0) {
-    return <Typography>No URLs have been shortened yet.</Typography>;
+    return (
+      <Paper
+        elevation={2}
+        className="url-list-empty"
+      >
+        <Typography variant="h6" gutterBottom className="url-list-empty-title">
+          🚀 No links yet
+        </Typography>
+        <Typography color="text.secondary" className="url-list-empty-subtitle">
+          Start by pasting a URL above and create your very first short link!
+        </Typography>
+      </Paper>
+    );
   }
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} className="url-list">
       {links.map((link) => (
         <ResultCard key={link.id} link={link} />
       ))}

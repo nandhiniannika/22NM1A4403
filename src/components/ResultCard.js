@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Card, CardContent, Typography, Button, Stack, Chip } from "@mui/material";
+import "./ResultCard.css";
+
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Stack,
+  Chip,
+} from "@mui/material";
 import { useLogger } from "../utils/logger";
 
 const STORAGE_KEY = "short_links";
@@ -14,53 +23,78 @@ function ResultCard({ link }) {
 
   const shortUrl = `${window.location.origin}/${link.code}`;
 
-  const isExpired = () => {
-    return Date.now() > link.created + link.ttl * 60000;
-  };
+  const isExpired = () => Date.now() > link.created + link.ttl * 60000;
 
-  const handleCopy = () => {
+  const copyToClipboard = () => {
     navigator.clipboard.writeText(shortUrl).then(() => {
       setCopied(true);
-      logger.info("Copied URL", { shortUrl });
+      logger.info("Copied short link", { shortUrl });
       setTimeout(() => setCopied(false), 2000);
     });
   };
 
-  const handleDelete = () => {
+  const removeLink = () => {
     let list = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     list = list.filter((x) => x.id !== link.id);
     saveLinks(list);
-    logger.warn("Deleted short link", { code: link.code });
+    logger.warn("Removed short link", { code: link.code });
     window.dispatchEvent(new Event("storage"));
   };
 
   return (
-    <Card>
-      <CardContent>
-        <Stack spacing={1}>
-          <Typography variant="body1">
-            <strong>Original:</strong> {link.url}
+    <Card className="link-card">
+      <CardContent className="link-content">
+        <Stack spacing={1} className="link-details">
+          <Typography variant="body1" className="original-link">
+            <strong>Original Link:</strong> {link.url}
           </Typography>
-          <Typography variant="body2">
-            <strong>Short:</strong>{" "}
-            <a href={shortUrl} target="_blank" rel="noreferrer">
+          <Typography variant="body2" className="short-link">
+            <strong>Short Link:</strong>{" "}
+            <a
+              href={shortUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="short-link-anchor"
+            >
               {shortUrl}
             </a>
           </Typography>
-          <Stack direction="row" spacing={1}>
+
+          {/* Status section */}
+          <Stack direction="row" spacing={1} className="status-section">
             <Chip
-              label={isExpired() ? "Expired" : "Active"}
+              label={isExpired() ? "⛔ Expired" : "🟢 Active"}
               color={isExpired() ? "error" : "success"}
+              className="status-chip"
             />
-            <Chip label={`Clicks: ${link.clicks}`} />
-            <Chip label={`Valid ${link.ttl} min`} />
+            <Chip
+              label={`🔗 Clicked ${link.clicks} times`}
+              className="clicks-chip"
+            />
+            <Chip
+              label={`⏳ Valid for ${link.ttl} minute${
+                link.ttl > 1 ? "s" : ""
+              }`}
+              className="ttl-chip"
+            />
           </Stack>
-          <Stack direction="row" spacing={2}>
-            <Button variant="outlined" onClick={handleCopy}>
-              {copied ? "Copied!" : "Copy"}
+
+          {/* Actions */}
+          <Stack direction="row" spacing={2} className="action-buttons">
+            <Button
+              variant="outlined"
+              onClick={copyToClipboard}
+              className="copy-button"
+            >
+              {copied ? "✅ Copied to Clipboard!" : "📋 Copy Link"}
             </Button>
-            <Button variant="outlined" color="error" onClick={handleDelete}>
-              Delete
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={removeLink}
+              className="delete-button"
+            >
+              🗑️ Remove
             </Button>
           </Stack>
         </Stack>

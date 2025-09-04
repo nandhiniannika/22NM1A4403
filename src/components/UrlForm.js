@@ -3,6 +3,8 @@ import { Paper, TextField, Button, Stack, Alert } from "@mui/material";
 import { isValidUrl, isValidMinutes, isValidShortcode } from "../utils/validator";
 import { generateCode } from "../utils/generator";
 import { useLogger } from "../utils/logger";
+import "./UrlForm.css";
+
 
 const STORAGE_KEY = "short_links";
 
@@ -26,7 +28,7 @@ function UrlForm() {
 
   const logger = useLogger();
 
-  const createLink = (e) => {
+  const handleCreateLink = (e) => {
     e.preventDefault();
     setError("");
 
@@ -34,23 +36,23 @@ function UrlForm() {
     const activeLinks = links.filter((l) => !isExpired(l));
 
     if (activeLinks.length >= 5) {
-      setError("You already have 5 active links.");
+      setError("You can only keep 5 active links at once. Please clear some before adding new ones.");
       logger.warn("Max active links reached");
       return;
     }
 
     if (!isValidUrl(longUrl)) {
-      setError("Invalid URL.");
+      setError("That doesn’t look like a valid URL. Please double-check and try again.");
       return;
     }
 
     if (!isValidMinutes(minutes)) {
-      setError("Minutes must be an integer (0–1440).");
+      setError("Please enter valid minutes (0–1440).");
       return;
     }
 
     if (!isValidShortcode(shortcode)) {
-      setError("Shortcode must be 3–20 chars (letters, numbers, _ or -).");
+      setError("Shortcode must be 3–20 characters (letters, numbers, _ or -).");
       return;
     }
 
@@ -58,7 +60,7 @@ function UrlForm() {
     let code = shortcode || generateCode();
 
     if (links.find((l) => l.code === code)) {
-      setError("Shortcode already exists.");
+      setError(`The shortcode “${code}” is already taken. Try something else.`);
       logger.warn("Shortcode collision", { code });
       return;
     }
@@ -87,30 +89,44 @@ function UrlForm() {
   }
 
   return (
-    <Paper elevation={3}>
-      <form onSubmit={createLink}>
-        <Stack spacing={2} padding={2}>
-          {error && <Alert severity="error">{error}</Alert>}
+    <Paper elevation={3} className="url-form-container">
+      <form onSubmit={handleCreateLink} className="url-form">
+        <Stack spacing={2} padding={2} className="url-form-fields">
+          {error && (
+            <Alert severity="error" className="url-form-error">
+              {error}
+            </Alert>
+          )}
+
           <TextField
-            label="Enter URL"
+            label="Paste your long URL"
+            placeholder="https://example.com/some/long/link"
             value={longUrl}
             onChange={(e) => setLongUrl(e.target.value)}
             fullWidth
+            className="url-input"
           />
+
           <TextField
-            label="Validity (minutes)"
+            label="How long should it stay active? (minutes)"
+            placeholder="Default is 30"
             value={minutes}
             onChange={(e) => setMinutes(e.target.value)}
             fullWidth
+            className="ttl-input"
           />
+
           <TextField
-            label="Custom Shortcode"
+            label="Custom Shortcode (optional)"
+            placeholder="e.g., my-link"
             value={shortcode}
             onChange={(e) => setShortcode(e.target.value)}
             fullWidth
+            className="shortcode-input"
           />
-          <Button type="submit" variant="contained">
-            Shorten
+
+          <Button type="submit" variant="contained" className="create-link-button">
+            Create Short Link
           </Button>
         </Stack>
       </form>

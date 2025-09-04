@@ -1,0 +1,56 @@
+/* UrlList.css */
+
+/* Empty state card */
+.url-list-empty {
+  padding: 2rem;
+  text-align: center;
+  border-radius: 14px;
+  background: #fefcf9; /* soft sand */
+  border: 1px solid #e0f2f1; /* light teal border */
+  box-shadow: 0 4px 12px rgba(0, 137, 123, 0.08);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.url-list-empty:hover {
+  box-shadow: 0 6px 16px rgba(0, 137, 123, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Empty state title */
+.url-list-empty-title {
+  color: #00897b; /* teal */
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.3px;
+}
+
+/* Empty state subtitle */
+.url-list-empty-subtitle {
+  color: #757575 !important; /* neutral gray */
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+/* List container */
+.url-list {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 🌍 Responsive */
+@media (max-width: 768px) {
+  .url-list-empty {
+    padding: 1.5rem;
+  }
+
+  .url-list-empty-title {
+    font-size: 1.05rem;
+  }
+
+  .url-list-empty-subtitle {
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,135 @@
+/* ResultCard.css */
+
+/* Main card */
+.link-card {
+  background: #fefcf9; /* soft sand */
+  border: 1px solid #e0f2f1;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0, 137, 123, 0.08);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  margin-top: 0.6rem;
+}
+
+.link-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 137, 123, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Inner content */
+.link-content {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Text */
+.original-link {
+  font-size: 0.95rem;
+  color: #37474f; /* charcoal */
+  word-break: break-all;
+}
+
+.short-link {
+  font-size: 0.9rem;
+  color: #00897b; /* teal */
+  word-break: break-all;
+}
+
+.short-link-anchor {
+  color: #ff7043; /* coral */
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.25s ease, text-decoration 0.25s ease;
+}
+
+.short-link-anchor:hover {
+  color: #f4511e;
+  text-decoration: underline;
+}
+
+/* Status chips */
+.status-section {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.status-chip {
+  font-weight: 600;
+  background: #e0f7fa;
+  color: #00695c;
+}
+
+.clicks-chip {
+  background: #fff9c4;
+  color: #f57f17;
+  font-weight: 500;
+}
+
+.ttl-chip {
+  background: #ffe0b2;
+  color: #ef6c00;
+  font-weight: 500;
+}
+
+/* Buttons */
+.action-buttons {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.copy-button {
+  border-color: #00897b;
+  color: #00897b;
+  text-transform: none;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.copy-button:hover {
+  background: #e0f2f1;
+  border-color: #00695c;
+  color: #00695c;
+}
+
+.delete-button {
+  border-color: #d84315;
+  color: #d84315;
+  text-transform: none;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.delete-button:hover {
+  background: #ffebee;
+  border-color: #b71c1c;
+  color: #b71c1c;
+}
+
+/* 🌍 Responsive */
+@media (max-width: 768px) {
+  .link-content {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .short-link {
+    font-size: 0.85rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .copy-button,
+  .delete-button {
+    width: 100%;
+  }
+}
